@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getDocumentById, deleteDocument } from '../services/documentService';
+import { getDocumentById, deleteDocument, getEmployeeById } from '../apiRequests';
 import { LoadingSpinner, ErrorAlert, Button } from '../components/UiItems';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../AuthContext';
 import securityLevels from '../securityLevels';
 import './Detail.css';
 
 function Detail() {
     const { id } = useParams();
     const [document, setDocument] = useState(null);
+    const [author, setAuthor] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -19,6 +20,8 @@ function Detail() {
             try {
                 const documentData = await getDocumentById(id);
                 setDocument(documentData);
+                const authorData = await getEmployeeById(documentData.author_id);
+                setAuthor(authorData);
             } catch (error) {
                 setError(error);
             } finally {
@@ -52,26 +55,25 @@ function Detail() {
         return <p>Документ не найден.</p>; 
     }
 
-    if (document.securityLevel > user.securityLevel) {
+    if (document.security_level > user.security_level) {
         return <ErrorAlert message={'Недостаточно прав для чтения документа.'} />;
     }
 
-    const canEdit = user && (user.id === document.authorId);
-    const canDelete = user && (user.id === document.authorId);
+    const canChange = user && (user.id === document.author_id);
 
     return (
         <div>
             <h2>{document.title}</h2>
-            <p><b>Создан:</b> {document.dateCreated}</p>
-            <p><b>Автор:</b> {`${user.lastname} ${user.name[0]}. ${user.middlename[0]}.`}</p>
-            <p><b>Номер документа:</b> {document.documentNumber}</p>
-            <p><b>Уровень доступа:</b> {securityLevels[document.securityLevel]}</p>
+            <p><b>Создан:</b> {document.date_created}</p>
+            <p><b>Автор:</b> {`${author.surname} ${author.name_[0]}. ${author.middle_name[0]}`}</p>
+            <p><b>Номер документа:</b> {document.registration_number}</p>
+            <p><b>Уровень доступа:</b> {securityLevels[document.security_level]}</p>
             <div className="content-box">{document.content}</div>
             {
-                canEdit && <Button onClick={() => navigate(`/edit/${document.id}`)}>Редактировать</Button>
+                canChange && <Button onClick={() => navigate(`/edit/${document.id}`)}>Редактировать</Button>
             }
             {
-                canDelete && <Button onClick={handleDelete}>Удалить</Button>
+                canChange && <Button onClick={handleDelete}>Удалить</Button>
             }
         </div>
     );

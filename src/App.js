@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import LoginPage from './pages/LoginPage';
+import { AuthProvider, useAuth } from './AuthContext';
 import { ErrorAlert } from './components/UiItems';
+import LoginPage from './pages/LoginPage';
 import Home from './pages/Home';
 import Detail from './pages/Detail';
 import Form from './pages/Form';

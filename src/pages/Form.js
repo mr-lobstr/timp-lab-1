@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createDocument, updateDocument, getDocumentById } from '../services/documentService';
+import { createDocument, updateDocument, getDocumentById } from '../apiRequests';
 import { Input, Button, ErrorAlert, Select } from '../components/UiItems';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../AuthContext';
 import securityLevels from '../securityLevels';
 
-const validateDocNumber = (number) => {
+const validateRegNumber = (number) => {
     const regex = /^ГС\/([А-Я]+)-(\d{4})\/(\d{2})-([А-Я0-9]+)$/;      
     const match = number.match(regex);
           
@@ -28,9 +28,11 @@ const validateDocNumber = (number) => {
 
 function Form() {
     const [title, setTitle] = useState('');
-    const [documentNumber, setDocumentNumber] = useState('');
-    const [content, setContent] = useState('');
+    const [type, setType] = useState('');
+    const [regNumber, setRegNumber] = useState('');
     const [securityLevel, setSecurityLevel] = useState(0);
+    const [content, setContent] = useState('');
+
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { id } = useParams();
@@ -42,16 +44,17 @@ function Form() {
             const fetchDocument = async () => {
                 try {
                     const document = await getDocumentById(id);
-                    if (document.authorId !== user.id && user.securityLevel !== 'admin') {
+                    if (document.author_id !== user.id && user.role !== 'администратор') {
                         setError({ message: 'У вас нет прав на редактирование этого документа.' });
                         navigate(`/detail/${id}`);
                         return;
                     }
 
                     setTitle(document.title);
-                    setDocumentNumber(document.documentNumber);
+                    setType(document.type_);
+                    setRegNumber(document.registration_number);
                     setContent(document.content);
-                    setSecurityLevel(document.securityLevel);
+                    setSecurityLevel(document.security_level);
                 } catch (error) {
                     setError({ message: 'Не удалось загрузить документ для редактирования.' });
                 }
@@ -66,25 +69,28 @@ function Form() {
 
         const documentData = {
             title,
-            documentNumber,
-            content,
-            securityLevel
+            type,
+            regNumber,
+            securityLevel,
+            content
         };
 
-        const err = validateDocNumber(documentData.documentNumber);
+        const err = validateRegNumber(regNumber);
 
         if (err) {
             setError({message : err});
             return;
         }
 
-        try {
-            documentData.dateCreated = new Date().toISOString().slice(0, 10);
-            documentData.authorId = user.id;
+        documentData.last_modified = new Date().toISOString().slice(0, 10);
 
+        try {
             if (isEditMode) {
                 await updateDocument(id, documentData);
             } else {
+                documentData.date_created = documentData.last_modified;
+                documentData.author_id = user.id;
+
                 await createDocument(documentData);
             }
             
@@ -106,18 +112,32 @@ function Form() {
             }
             <form onSubmit={handleSubmit}>
                 <Input
-                    label="Название"
+                    label="Заголовок"
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
                 />
                 <Input
-                    label="Номер документа"
+                    label="Тип документа"
                     type="text"
-                    value={documentNumber}
-                    onChange={(e) => setDocumentNumber(e.target.value)}
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
                     required
+                />
+                <Input
+                    label="Регистрационный номер документа"
+                    type="text"
+                    value={regNumber}
+                    onChange={(e) => setRegNumber(e.target.value)}
+                    required
+                />
+                <Select
+                    label="Гриф секретности"
+                    value={securityLevel}
+                    usersSequrityLevel={user.security_level}
+                    onChange={(e) => setSecurityLevel(e.target.value)}
+                    options={securityLevels}
                 />
                 <Input
                     label="Содержание"
@@ -125,13 +145,6 @@ function Form() {
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     required
-                />
-                <Select
-                    label="Уровень доступа"
-                    value={securityLevel}
-                    usersSequrityLevel={user.securityLevel}
-                    onChange={(e) => setSecurityLevel(e.target.value)}
-                    options={securityLevels}
                 />
                 <Button type="submit">Сохранить</Button>
             </form>

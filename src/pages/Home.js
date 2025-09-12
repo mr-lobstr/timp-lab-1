@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { getAllDocuments } from '../services/documentService';
+import { useAuth } from '../AuthContext';
+import { getAllDocuments } from '../apiRequests';
 import DocumentItem from '../components/DocumentItem';
 import { LoadingSpinner, ErrorAlert, Button } from '../components/UiItems';
+import './Home.css'
 
 function Home() {
     const [documents, setDocuments] = useState([]);
@@ -37,20 +38,21 @@ function Home() {
     }
 
     return (
-        <div>
-            <h2>Список документов</h2>
-            {documents.length > 0 ? (
-                <ul>
-                    {documents.map(document => (
-                        <DocumentItem key={document.id} document={document} />
-                    ))}
-                </ul>
-            ) : (
-                <p>Документы не найдены.</p>
-            )}
-            <Button onClick={() => navigate("/add")}>Добавить документ</Button>
-            <Button className="logout_button" onClick={() => logout()}>Выйти</Button>
-        </div>
+        <div className="documents-container">
+  {documents.length > 0 ? (
+    <div className="documents-list">
+      <ul>
+        {documents.map(document => (
+          <DocumentItem key={document.id} document={document} />
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <p>Документы не найдены.</p>
+  )}
+  <Button onClick={() => navigate("/add")}>Добавить документ</Button>
+  <Button className="logout_button" onClick={() => logout()}>Выйти</Button>
+</div>
     );
 }
 

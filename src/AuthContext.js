@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getAllUsers } from '../services/userService';
+import { createContext, useState, useEffect, useContext } from 'react';
+import { getAllEmployees } from './apiRequests';
 
 const AuthContext = createContext();
 
@@ -28,10 +28,10 @@ export const AuthProvider = ({ children }) => {
         checkAuth();
     }, []);
 
-    const login = async (username, password) => {
+    const login = async (login_, password) => {
         try {
-            const users = await getAllUsers();
-            const foundUser = users.find(u => u.username === username && u.password === password);
+            const users = await getAllEmployees();
+            const foundUser = users.find(u => u.login_ === login_ && u.password_hash === password);
 
             if (foundUser) {
                 setUser(foundUser);

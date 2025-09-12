@@ -1,4 +1,3 @@
-import React from 'react';
 import './UiItems.css';
 
 export function Button({ type, children, onClick }) {

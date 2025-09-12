@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../AuthContext';
 import { Input, Button, ErrorAlert } from '../components/UiItems';
 
 function LoginPage() {
-    const [username, setUsername] = useState('');
+    const [login_, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const { login, error } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const success = await login(username, password);
+        const success = await login(login_, password);
         if (success) {
             navigate('/');
         }
@@ -27,8 +27,8 @@ function LoginPage() {
                 <Input
                     label="Имя пользователя"
                     type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={login_}
+                    onChange={(e) => setLogin(e.target.value)}
                     required
                 />
                 <Input

@@ -12,6 +12,7 @@ main {
 
 .App-header {
     background-color: #1e445d;
+    position: sticky;
     min-height: 40px;
     display: flex;
     flex-direction: column;
