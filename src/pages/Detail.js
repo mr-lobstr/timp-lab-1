@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getDocumentById, deleteDocument, getEmployeeById } from '../apiRequests';
 import { LoadingSpinner, ErrorAlert, Button } from '../components/UiItems';
 import { useAuth } from '../AuthContext';
-import securityLevels from '../securityLevels';
+import { securityLevels } from '../constants';
 import './Detail.css';
 
 function Detail() {
@@ -62,7 +62,7 @@ function Detail() {
     const canChange = user && (user.id === document.author_id);
 
     return (
-        <div>
+        <div className='document-detail'>
             <h2>{document.title}</h2>
             <p><b>Создан:</b> {document.date_created}</p>
             <p><b>Автор:</b> {`${author.surname} ${author.name_[0]}. ${author.middle_name[0]}`}</p>

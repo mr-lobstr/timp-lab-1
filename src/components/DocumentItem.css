@@ -1,12 +1,14 @@
 .document-item {
-  list-style: none;
-  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  margin: 6px 0;
   border: 1px solid #ccc;
-  margin-bottom: 8px;
   border-radius: 5px;
-  background-color: #f6f6f8;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: background-color 0.2s ease;
+  cursor: pointer;
+  background: #f9f9f9;
+  transition: background 0.2s;
 }
 
 .document-item:hover {
@@ -25,7 +27,6 @@
 
 .document-title {
   font-weight: bold;
-  font-size: 1.1em;
 }
 
 .document-meta {
@@ -35,6 +36,7 @@
 }
 
 .document-type,
+
 .document-number {
   display: inline-block;
   padding: 2px 8px;

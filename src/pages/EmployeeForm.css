@@ -1,0 +1,22 @@
+.employee-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+}
+
+.employee-form-container h2 {
+  margin: 8 auto;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.employee-form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}

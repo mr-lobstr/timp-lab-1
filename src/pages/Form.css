@@ -1,0 +1,14 @@
+.document-form h2 {
+    margin: 8 auto;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.document-form-constainer {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 20px;
+    padding: 20px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+}

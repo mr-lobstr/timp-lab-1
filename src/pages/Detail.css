@@ -1,3 +1,13 @@
+.document-detail {
+    display: flex;
+    flex-direction: column;
+    /* gap: 12px; */
+    margin: 20px 20px;
+    padding: 20px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+}
+
 .content-box {
     border: 1px solid #ccc;
     padding: 10px;

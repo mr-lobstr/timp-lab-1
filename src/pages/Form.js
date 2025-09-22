@@ -3,28 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createDocument, updateDocument, getDocumentById } from '../apiRequests';
 import { Input, Button, ErrorAlert, Select } from '../components/UiItems';
 import { useAuth } from '../AuthContext';
-import securityLevels from '../securityLevels';
-
-const validateRegNumber = (number) => {
-    const regex = /^ГС\/([А-Я]+)-(\d{4})\/(\d{2})-([А-Я0-9]+)$/;      
-    const match = number.match(regex);
-          
-    if (!match) {
-        return "Номер документа должен соответствовать формату:\n"
-             + "ГС/{Подразделение}-{Год}/{Месяц}-{Индекс}";
-    };
-          
-    const year = parseInt(match[2], 10);
-    const month = parseInt(match[3], 10);
-          
-    if (year < 2000 || year > 2100) {
-        return "Год должен быть в диапазоне 2000-2100";
-    }
-    if (month < 1 || month > 12) {
-        return "Месяц должен быть в диапазоне 1-12";
-    }
-    return null;
-};
+import {securityLevels} from '../constants';
+import "./Form.css";
 
 function Form() {
     const [title, setTitle] = useState('');
@@ -75,13 +55,6 @@ function Form() {
             content
         };
 
-        const err = validateRegNumber(regNumber);
-
-        if (err) {
-            setError({message : err});
-            return;
-        }
-
         documentData.last_modified = new Date().toISOString().slice(0, 10);
 
         try {
@@ -105,12 +78,12 @@ function Form() {
     };
 
     return (
-        <div>
-            <h2>{isEditMode ? 'Редактировать документ' : 'Добавить документ'}</h2>
+        <div className='document-form'>
+            <h2>{isEditMode ? 'Редактировать документ' : 'Новый документ'}</h2>
             {
                 error && <ErrorAlert message={error.message} />
             }
-            <form onSubmit={handleSubmit}>
+            <form className='document-form-constainer' onSubmit={handleSubmit}>
                 <Input
                     label="Заголовок"
                     type="text"

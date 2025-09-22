@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import { Input, Button, ErrorAlert } from '../components/UiItems';
+import "./LoginPage.css";
 
 function LoginPage() {
     const [login_, setLogin] = useState('');
@@ -18,7 +19,7 @@ function LoginPage() {
     };
 
     return (
-        <div>
+        <div className='login-page'>
             <h2>Вход</h2>
             {
                 error && <ErrorAlert message={error} />

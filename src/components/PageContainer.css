@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 1px 20px;
+}
+
+.page-action {
+    margin-left: 20px;
+    padding: 8px 0px 8px 0px;
+}
+
+.list {
+  flex: 1;
+  max-height: 430px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px 6px;
+  background: #fff;
+  margin-bottom: 10px;
+}
+
+.list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

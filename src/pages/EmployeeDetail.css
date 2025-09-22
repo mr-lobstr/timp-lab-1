@@ -1,0 +1,19 @@
+.employee-detail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.employee-detail h2 {
+  margin: 8 auto;
+  font-size: 1.3rem;
+  text-align: center;
+}
+

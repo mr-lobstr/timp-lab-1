@@ -1,8 +1,8 @@
 import './UiItems.css';
 
-export function Button({ type, children, onClick }) {
+export function Button({ type, children, onClick, className }) {
     return (
-        <button type={type} className="button" onClick={onClick}>
+        <button type={type} className={`button ${className || ""}`} onClick={onClick}>
             {children}
         </button>
     );
@@ -17,9 +17,20 @@ export function Input({ label, type, value, onChange, required }) {
         <div className="input-group">
             <label htmlFor={label}>{label}</label>
             {type === 'textarea' ? (
-                <textarea id={label} value={value} onChange={onChange} required={required} />
+                <textarea
+                    id={label}
+                    value={value}
+                    onChange={onChange}
+                    required={required}
+                />
             ) : (
-                <input type={type} id={label} value={value} onChange={onChange} required={required} />
+                <input
+                    type={type}
+                    id={label}
+                    value={value}
+                    onChange={onChange}
+                    required={required}
+                />
             )}
         </div>
     );
@@ -29,19 +40,26 @@ export function LoadingSpinner() {
     return <div className="loading-spinner">Loading...</div>;
 }
 
-export function Select({ label, value, onChange, options, usersSequrityLevel }) {
-    const userOption = options.filter((_, index) => index <= usersSequrityLevel)
+export function Select({ label, value, onChange, options, usersSequrityLevel = null }) {
+    let userOptions = options;
+
+    if (usersSequrityLevel !== null) {
+        userOptions = options.filter((_, index) => index <= usersSequrityLevel);
+    }
 
     return (
         <div className="select-group">
             <label htmlFor={label}>{label}</label>
             <select id={label} value={value} onChange={onChange}>
-                {
-                    userOption.map((option, index) => (
-                        <option key={index} value={index}>{option}</option>
-                    ))
-                }
+                {userOptions.map((option, index) => (
+                    <option
+                        key={index}
+                        value={typeof option === "string" ? option : index}
+                    >
+                        {option}
+                    </option>
+                ))}
             </select>
         </div>
-  );
+    );
 }

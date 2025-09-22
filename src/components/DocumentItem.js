@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './DocItem.css'
+import './DocumentItem.css'
 
 function DocumentItem({ document }) {
   return (
